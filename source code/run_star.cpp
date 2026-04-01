@@ -13,19 +13,19 @@
 
 
 
-// Sta³e
+// StaÂ³e
 const int ROZMIAR_OKNA = 960; // Rozmiar okna gry
 const float PROMIEN_GRACZA = 40.f; // Rozmiar gracza
-const float PREDKOSC_OBROTU = 150.f; // Prêdkoœæ obrotu (stopnie na sekundê)
-const float POCZATKOWY_PROMIEN = 1.f; // Pocz¹tkowy promieñ oktagonów
-const float POCZATKOWY_MNOZNIK_ROZROSTU = 2.f; // Pocz¹tkowy mno¿nik rozrostu oktagonów
-const float ZWIEKSZENIE_PREDKOSCI = 0.1f; // Zwiêkszenie mno¿nika rozrostu co sekundê
-const int LICZBA_BOKOW = 8; // Liczba boków oktagonu
-const float TOLERANCJA = 15; // Tolerancja na b³ad (hitbox)
+const float PREDKOSC_OBROTU = 150.f; // PrÃªdkoÅ“Ã¦ obrotu (stopnie na sekundÃª)
+const float POCZATKOWY_PROMIEN = 1.f; // PoczÂ¹tkowy promieÃ± oktagonÃ³w
+const float POCZATKOWY_MNOZNIK_ROZROSTU = 2.f; // PoczÂ¹tkowy mnoÂ¿nik rozrostu oktagonÃ³w
+const float ZWIEKSZENIE_PREDKOSCI = 0.1f; // ZwiÃªkszenie mnoÂ¿nika rozrostu co sekundÃª
+const int LICZBA_BOKOW = 8; // Liczba bokÃ³w oktagonu
+const float TOLERANCJA = 15; // Tolerancja na bÂ³ad (hitbox)
 const float ROZMIAR_WROGA = 20.f; // rozmiar wroga
 const std::string NAZWA_PLIKU = "rekord.txt";
 
-//Deklaracja zmiennych pod dŸwiêki 
+//Deklaracja zmiennych pod dÅ¸wiÃªki 
 
 sf::SoundBuffer shootBuffer;
 sf::SoundBuffer enemyDeathBuffer;
@@ -35,7 +35,7 @@ sf::Sound shootSound;
 sf::Sound enemyDeathSound;
 sf::Sound playerDeathSound;
 
-//Deklaracja zmiennych pod muzykê 
+//Deklaracja zmiennych pod muzykÃª 
 
 sf::Music backgroundMusic;
 sf::Music startbackgroundMusic;
@@ -45,10 +45,10 @@ bool trudno = false;
 int liczbaZabitych = 0;
 
 struct LiniaIKolo {
-    std::vector<sf::Vertex> linia; // Linia (od gracza do œrodka)
-    sf::CircleShape kolo;          // Kó³ko "zakotwiczone" do linii
-    sf::Vector2f kierunek;         // Kierunek ruchu kó³ka
-    float predkosc;                // Aktualna prêdkoœæ kó³ka
+    std::vector<sf::Vertex> linia; // Linia (od gracza do Å“rodka)
+    sf::CircleShape kolo;          // KÃ³Â³ko "zakotwiczone" do linii
+    sf::Vector2f kierunek;         // Kierunek ruchu kÃ³Â³ka
+    float predkosc;                // Aktualna prÃªdkoÅ“Ã¦ kÃ³Â³ka
 };
 
 
@@ -61,7 +61,7 @@ float odczytajRekord() {
         plik.close();
         return rekord;
     }
-    return 0.0f; // Domyœlnie 0, jeœli plik nie istnieje
+    return 0.0f; // DomyÅ“lnie 0, jeÅ“li plik nie istnieje
 }
 
 // Funkcja do zapisu rekordu do pliku
@@ -76,7 +76,7 @@ void zapiszRekord(float rekord) {
 
 
 
-// Funkcja obracaj¹ca punkt wokó³ œrodka
+// Funkcja obracajÂ¹ca punkt wokÃ³Â³ Å“rodka
 void obrocPunkt(sf::Vector2f& punkt, const sf::Vector2f& srodek, float kat) {
     sf::Vector2f kierunek = punkt - srodek;
     float obroconyX = kierunek.x * std::cos(kat) - kierunek.y * std::sin(kat);
@@ -84,14 +84,14 @@ void obrocPunkt(sf::Vector2f& punkt, const sf::Vector2f& srodek, float kat) {
     punkt = srodek + sf::Vector2f(obroconyX, obroconyY);
 }
 
-// Funkcja obracaj¹ca liniê
+// Funkcja obracajÂ¹ca liniÃª
 void obrocLinie(sf::Vertex* linia, const sf::Vector2f& srodek, float kat) {
     for (int i = 0; i < 2; ++i) {
         obrocPunkt(linia[i].position, srodek, kat);
     }
 }
 
-// Funkcja tworz¹ca oktagon o zadanym promieniu i obrocie
+// Funkcja tworzÂ¹ca oktagon o zadanym promieniu i obrocie
 std::vector<sf::Vector2f> utworzOktagon(const sf::Vector2f& srodek, float promien, float przesuniecieObrotu = 0.f) {
     std::vector<sf::Vector2f> wierzcholki;
     for (int i = 0; i < LICZBA_BOKOW; ++i) {
@@ -102,13 +102,13 @@ std::vector<sf::Vector2f> utworzOktagon(const sf::Vector2f& srodek, float promie
     return wierzcholki;
 }
 
-// Funkcja generuj¹ca dziury w oktagonach
+// Funkcja generujÂ¹ca dziury w oktagonach
 std::vector<int> generujDziury(int liczbaBokow) {
     std::vector<int> dziury;
-    while (dziury.size() < 2) { // Dopóki liczba dziur jest mniejsza ni¿ 2
-        dziury.clear(); // Wyczyœæ wektor dziur
+    while (dziury.size() < 2) { // DopÃ³ki liczba dziur jest mniejsza niÂ¿ 2
+        dziury.clear(); // WyczyÅ“Ã¦ wektor dziur
         for (int i = 0; i < liczbaBokow; ++i) {
-            if (std::rand() % 2 == 0) { // Losowo wybierz krawêdzie z dziurami
+            if (std::rand() % 2 == 0) { // Losowo wybierz krawÃªdzie z dziurami
                 dziury.push_back(i);
             }
         }
@@ -116,11 +116,11 @@ std::vector<int> generujDziury(int liczbaBokow) {
     return dziury;
 }
 
-// Funkcja rysuj¹ca oktagon z dziurami
+// Funkcja rysujÂ¹ca oktagon z dziurami
 void rysujOktagonZDziurami(sf::RenderWindow& okno, const std::vector<sf::Vector2f>& wierzcholki, const std::vector<int>& dziury, sf::Color kolor) {
     for (size_t i = 0; i < wierzcholki.size(); ++i) {
         if (std::find(dziury.begin(), dziury.end(), i) != dziury.end()) {
-            continue; // Pomiñ rysowanie krawêdzi z dziur¹
+            continue; // PomiÃ± rysowanie krawÃªdzi z dziurÂ¹
         }
         sf::Vertex linia[] = {
             sf::Vertex(wierzcholki[i], kolor),
@@ -130,7 +130,7 @@ void rysujOktagonZDziurami(sf::RenderWindow& okno, const std::vector<sf::Vector2
     }
 }
 
-// Funkcja rysuj¹ca pe³ny oktagon
+// Funkcja rysujÂ¹ca peÂ³ny oktagon
 void rysujPelnyOktagon(sf::RenderWindow& okno, const std::vector<sf::Vector2f>& wierzcholki, sf::Color kolor) {
     for (size_t i = 0; i < wierzcholki.size(); ++i) {
         sf::Vertex linia[] = {
@@ -141,19 +141,19 @@ void rysujPelnyOktagon(sf::RenderWindow& okno, const std::vector<sf::Vector2f>& 
     }
 }
 
-// Funkcja sprawdzaj¹ca kolizjê gracza z liniami
+// Funkcja sprawdzajÂ¹ca kolizjÃª gracza z liniami
 bool sprawdzKolizje(const sf::CircleShape& gracz, const std::vector<sf::Vector2f>& wierzcholki, const std::vector<int>& dziury) {
     sf::Vector2f pozycjaGracza = gracz.getPosition();
 
     for (size_t i = 0; i < wierzcholki.size(); ++i) {
         if (std::find(dziury.begin(), dziury.end(), i) != dziury.end()) {
-            continue; // Pomiñ krawêdzie z dziur¹
+            continue; // PomiÃ± krawÃªdzie z dziurÂ¹
         }
 
         sf::Vector2f start = wierzcholki[i];
         sf::Vector2f koniec = wierzcholki[(i + 1) % wierzcholki.size()];
 
-        // Oblicz najkrótsz¹ odleg³oœæ od punktu do odcinka
+        // Oblicz najkrÃ³tszÂ¹ odlegÂ³oÅ“Ã¦ od punktu do odcinka
         sf::Vector2f linia = koniec - start;
         sf::Vector2f doGracza = pozycjaGracza - start;
 
@@ -188,7 +188,7 @@ void spawnCelWroga(const sf::Vector2f& center, float promien) {
     CelWroga celWroga;
     float kat = static_cast<float>(rand()) / RAND_MAX * 2.f * 3.14f;
 
-    // Oblicz wspó³rzêdne punktu na okrêgu
+    // Oblicz wspÃ³Â³rzÃªdne punktu na okrÃªgu
     float x = center.x + promien * std::cos(kat);
     float y = center.y + promien * std::sin(kat);
     celWroga.position = sf::Vector2f(x, y);
@@ -218,16 +218,16 @@ void spawnWrog(const sf::Vector2f& position, const sf::Vector2f& cel) {
     sf::Vector2f direction = cel - position;
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
     if (length != 0.f) {
-        wrog.velocity = direction / length * 10.f; // Pocz¹tkowa prêdkoœæ
+        wrog.velocity = direction / length * 10.f; // PoczÂ¹tkowa prÃªdkoÅ“Ã¦
     }
     else {
-        wrog.velocity = sf::Vector2f(0.f, 0.f); // W przypadku d³ugoœci zero (gdyby cel == center)
+        wrog.velocity = sf::Vector2f(0.f, 0.f); // W przypadku dÂ³ugoÅ“ci zero (gdyby cel == center)
     }
     wrog.radius = 1.f; // poczatkowy rozmiar
     wrogowie.push_back(wrog);
 }
 
-// Funckja aktualizujaca wrogów
+// Funckja aktualizujaca wrogÃ³w
 void updateWrogowie(float deltaTime, const sf::Vector2f& center) {
     for (auto it = wrogowie.begin(); it != wrogowie.end();) {
         //obrocPunkt(it->position, center, kat);
@@ -236,7 +236,7 @@ void updateWrogowie(float deltaTime, const sf::Vector2f& center) {
         it->velocity *= 1.04f; // Powoli przyspieszaj
         it->radius *= 1.03f; // Rosnij po czasie
 
-        // Usun wrogów jesli urosna zbyt mocno
+        // Usun wrogÃ³w jesli urosna zbyt mocno
         if (it->radius > 50.f) {
             it = wrogowie.erase(it);
         }
@@ -246,7 +246,7 @@ void updateWrogowie(float deltaTime, const sf::Vector2f& center) {
     }
 }
 
-// Funkcja wysuj¹ca wrogów
+// Funkcja wysujÂ¹ca wrogÃ³w
 void drawWrogowie(sf::RenderWindow& window, const sf::Texture& wrogTexture) {
     for (const auto& wrog : wrogowie) {
         sf::CircleShape shape(wrog.radius);
@@ -260,20 +260,20 @@ bool sprawdzKolizjeZWrogiem(const sf::CircleShape& gracz, const Wrog& wrog) {
     sf::Vector2f pozycjaGracza = gracz.getPosition();
     sf::Vector2f pozycjaWroga = wrog.position;
 
-    // Oblicz odleg³oœæ miêdzy œrodkami gracza i wroga
+    // Oblicz odlegÂ³oÅ“Ã¦ miÃªdzy Å“rodkami gracza i wroga
     sf::Vector2f roznica = pozycjaGracza - pozycjaWroga;
     float odleglosc = std::sqrt(roznica.x * roznica.x + roznica.y * roznica.y);
 
-    // SprawdŸ, czy odleg³oœæ jest mniejsza lub równa sumie promieni
+    // SprawdÅ¸, czy odlegÂ³oÅ“Ã¦ jest mniejsza lub rÃ³wna sumie promieni
     float sumaPromieni = gracz.getRadius() + wrog.radius;
     return odleglosc <= sumaPromieni;
 }
 void sprawdzKolizjeGraczaZWrogami(sf::CircleShape& gracz, std::vector<Wrog>& wrogowie) {
     for (auto it = wrogowie.begin(); it != wrogowie.end();) {
         if (sprawdzKolizjeZWrogiem(gracz, *it)) {
-            // Reakcja na kolizjê (np. usuñ wroga i zmniejsz ¿ycie gracza)
+            // Reakcja na kolizjÃª (np. usuÃ± wroga i zmniejsz Â¿ycie gracza)
             std::cout << "Kolizja z wrogiem!" << std::endl;
-            it = wrogowie.erase(it); // Usuñ wroga z listy
+            it = wrogowie.erase(it); // UsuÃ± wroga z listy
         }
         else {
             ++it;
@@ -284,11 +284,11 @@ bool sprawdzKolizjeKulkaZWrogiem(const sf::CircleShape& kulka, const Wrog& wrog)
     sf::Vector2f pozycjaKulka = kulka.getPosition();
     sf::Vector2f pozycjaWroga = wrog.position;
 
-    // Oblicz odleg³oœæ miêdzy œrodkami kulki i wroga
+    // Oblicz odlegÂ³oÅ“Ã¦ miÃªdzy Å“rodkami kulki i wroga
     sf::Vector2f roznica = pozycjaKulka - pozycjaWroga;
     float odleglosc = std::sqrt(roznica.x * roznica.x + roznica.y * roznica.y);
 
-    // SprawdŸ, czy odleg³oœæ jest mniejsza lub równa sumie promieni
+    // SprawdÅ¸, czy odlegÂ³oÅ“Ã¦ jest mniejsza lub rÃ³wna sumie promieni
     float sumaPromieni = kulka.getRadius() + wrog.radius;
     return odleglosc <= sumaPromieni;
 }
@@ -300,10 +300,10 @@ int main() {
     sf::RenderWindow okno(sf::VideoMode(ROZMIAR_OKNA, ROZMIAR_OKNA), "RUNSTAR");
     okno.setFramerateLimit(60);
 
-    // Definicja œrodka tunelu
+    // Definicja Å“rodka tunelu
     sf::Vector2f srodek(ROZMIAR_OKNA / 2.f, ROZMIAR_OKNA / 2.f);
 
-    // Tworzenie osi wspó³rzêdnych
+    // Tworzenie osi wspÃ³Â³rzÃªdnych
     sf::Vertex osX[] = {
      sf::Vertex(sf::Vector2f(-ROZMIAR_OKNA, srodek.y), sf::Color(7, 7, 62)),
      sf::Vertex(sf::Vector2f(ROZMIAR_OKNA * 2, srodek.y), sf::Color(7, 7, 62))
@@ -332,16 +332,16 @@ int main() {
     gracz.setOrigin(PROMIEN_GRACZA, PROMIEN_GRACZA);
     gracz.setPosition(srodek.x, ROZMIAR_OKNA - ROZMIAR_OKNA / 5.f);
 
-    //Inicjalizacja dŸwiêków zawartoœciami plików
+    //Inicjalizacja dÅ¸wiÃªkÃ³w zawartoÅ“ciami plikÃ³w
 
     if (!shootBuffer.loadFromFile("shoot.wav")) {
-        std::cerr << "Nie mo¿na za³adowaæ shoot.wav\n";
+        std::cerr << "Nie moÂ¿na zaÂ³adowaÃ¦ shoot.wav\n";
     }
      if (!enemyDeathBuffer.loadFromFile("enemy_death.wav")) {
-         std::cerr << "Nie mo¿na za³adowaæ enemy_death.wav\n";
+         std::cerr << "Nie moÂ¿na zaÂ³adowaÃ¦ enemy_death.wav\n";
      }
     if (!playerDeathBuffer.loadFromFile("ded.wav")) {
-        std::cerr << "Nie mo¿na za³adowaæ ded.wav\n";
+        std::cerr << "Nie moÂ¿na zaÂ³adowaÃ¦ ded.wav\n";
     }
 
     shootSound.setBuffer(shootBuffer);
@@ -351,14 +351,14 @@ int main() {
 
     //inicjalizacja muzyki
     if (!backgroundMusic.openFromFile("background_music.mp3")) {
-        std::cerr << "Nie mo¿na za³adowaæ background_music.mp3\n";
+        std::cerr << "Nie moÂ¿na zaÂ³adowaÃ¦ background_music.mp3\n";
     }
     if (!startbackgroundMusic.openFromFile("startbackground_music.mp3")) {
-        std::cerr << "Nie mo¿na za³adowaæ background_music.mp3\n";
+        std::cerr << "Nie moÂ¿na zaÂ³adowaÃ¦ background_music.mp3\n";
 
     }
     if (!endbackgroundMusic.openFromFile("endbackground_music.mp3")) {
-        std::cerr << "Nie mo¿na za³adowaæ background_music.mp3\n";
+        std::cerr << "Nie moÂ¿na zaÂ³adowaÃ¦ background_music.mp3\n";
     }
 
     // Ladowanie tekstur
@@ -417,7 +417,7 @@ int main() {
     enum class Direction { Front, Right, Left };
     Direction currentDirection = Direction::Front;
 
-    // £adowanie czcionki
+    // Â£adowanie czcionki
     sf::Font font;
     if (!font.loadFromFile("press.ttf")) {
         std::cerr << "Nie udalo sie zaladowac czcionki press.ttf" << std::endl;
@@ -451,11 +451,11 @@ int main() {
     ramkaLicznika.setOutlineThickness(2.f);
     ramkaLicznika.setPosition(ROZMIAR_OKNA - 260.f, 10.f);
 
-    // Inicjalizacja oktagonów
+    // Inicjalizacja oktagonÃ³w
     std::vector<std::pair<std::vector<sf::Vector2f>, float>> oktagony;
     std::vector<std::pair<std::vector<sf::Vector2f>, float>> czerwoneOktagony;
     std::vector<std::vector<int>> dziuryWDanychOktagonach;
-    float przesuniecieObrotu = 0.f; // Pocz¹tkowy obrót
+    float przesuniecieObrotu = 0.f; // PoczÂ¹tkowy obrÃ³t
     float aktualnyMnoznikRozrostu = POCZATKOWY_MNOZNIK_ROZROSTU;
 
     // Dodanie pierwszego oktagonu
@@ -463,7 +463,7 @@ int main() {
     czerwoneOktagony.emplace_back(utworzOktagon(srodek, POCZATKOWY_PROMIEN), POCZATKOWY_PROMIEN);
     dziuryWDanychOktagonach.push_back(generujDziury(LICZBA_BOKOW));
 
-    std::vector<LiniaIKolo> linieIKolka; // Wektor przechowuj¹cy linie
+    std::vector<LiniaIKolo> linieIKolka; // Wektor przechowujÂ¹cy linie
     sf::Clock zegarLinii; // Zegar do tworzenia linii
     std::vector<sf::CircleShape> kolka; //pocisk
 
@@ -486,7 +486,7 @@ int main() {
 
         }
 
-        //Deklaracja napisów w menu
+        //Deklaracja napisÃ³w w menu
         sf::Text tekstStart;
         tekstStart.setFont(font);
         tekstStart.setString("START");
@@ -526,7 +526,7 @@ int main() {
 
 
 
-        // Aktualizacja tekstu licznika zabitych wrogów
+        // Aktualizacja tekstu licznika zabitych wrogÃ³w
         std::stringstream zabitychStream;
         zabitychStream << "Punkty: " << liczbaZabitych;
         tekstZabitych.setString(zabitychStream.str());
@@ -542,7 +542,7 @@ int main() {
             celClock.restart(); // Restart zegara
         }
 
-        // Spawn wrogów co 3 sekundy, jeœli s¹ cele
+        // Spawn wrogÃ³w co 3 sekundy, jeÅ“li sÂ¹ cele
         if (wrogClock.getElapsedTime().asSeconds() >= 1.f) {
             if (!cele.empty()) {
                 int losowyIndeks = rand() % cele.size(); // Wybierz losowy cel
@@ -564,7 +564,7 @@ int main() {
                 shootSound.play();
             }
 
-            // Tworzenie nowego kó³ka
+            // Tworzenie nowego kÃ³Â³ka
             sf::CircleShape noweKolo(PROMIEN_GRACZA / 6.f);
             noweKolo.setFillColor(sf::Color::White);
             noweKolo.setOrigin(noweKolo.getRadius(), noweKolo.getRadius());
@@ -572,56 +572,56 @@ int main() {
             /*noweKolo.setTexture(&pocisk);*/
             
 
-            // Oblicz kierunek ruchu kó³ka w stronê œrodka
+            // Oblicz kierunek ruchu kÃ³Â³ka w stronÃª Å“rodka
             sf::Vector2f kierunek = srodek - gracz.getPosition();
             float dlugosc = std::sqrt(kierunek.x * kierunek.x + kierunek.y * kierunek.y);
             if (dlugosc > 0) {
                 kierunek /= dlugosc; // Normalizacja
             }
 
-            // Ustawienie pocz¹tkowej prêdkoœci (np. 200 pikseli/sekundê)
+            // Ustawienie poczÂ¹tkowej prÃªdkoÅ“ci (np. 200 pikseli/sekundÃª)
             float poczatkowaPredkosc = 200.f;
 
-            // Dodaj liniê, kó³ko, kierunek i prêdkoœæ do wektora
+            // Dodaj liniÃª, kÃ³Â³ko, kierunek i prÃªdkoÅ“Ã¦ do wektora
             linieIKolka.push_back({ nowaLinia, noweKolo, kierunek, poczatkowaPredkosc });
 
             zegarLinii.restart();
         }
         for (auto& liniaIKolo : linieIKolka) {
-            // Zwalnianie prêdkoœci o mno¿nik 0.97 co klatkê
+            // Zwalnianie prÃªdkoÅ“ci o mnoÂ¿nik 0.97 co klatkÃª
             liniaIKolo.predkosc *= 0.98f;
 
-            // Minimalna prêdkoœæ (np. 10 pikseli/sekundê)
+            // Minimalna prÃªdkoÅ“Ã¦ (np. 10 pikseli/sekundÃª)
             if (liniaIKolo.predkosc < 10.f) {
                 liniaIKolo.predkosc = 10.f;
             }
 
-            // Aktualizacja pozycji kó³ka wzd³u¿ kierunku
+            // Aktualizacja pozycji kÃ³Â³ka wzdÂ³uÂ¿ kierunku
             liniaIKolo.kolo.move(liniaIKolo.kierunek * liniaIKolo.predkosc * deltaCzas);
         }
         for (auto& liniaIKolo : linieIKolka) {
-            // Zmniejszanie rozmiaru kó³ka
-            float mnoznikRozmiaru = 0.96f; // Mno¿nik zmniejszaj¹cy rozmiar co klatkê
+            // Zmniejszanie rozmiaru kÃ³Â³ka
+            float mnoznikRozmiaru = 0.96f; // MnoÂ¿nik zmniejszajÂ¹cy rozmiar co klatkÃª
             liniaIKolo.kolo.setScale(
                 liniaIKolo.kolo.getScale().x * mnoznikRozmiaru,
                 liniaIKolo.kolo.getScale().y * mnoznikRozmiaru
             );
 
-            // Minimalny rozmiar kó³ka
+            // Minimalny rozmiar kÃ³Â³ka
             if (liniaIKolo.kolo.getScale().x < 0.1f) {
                 liniaIKolo.kolo.setScale(0.1f, 0.1f);
             }
 
-            // Aktualizacja pozycji kó³ka wzd³u¿ kierunku
+            // Aktualizacja pozycji kÃ³Â³ka wzdÂ³uÂ¿ kierunku
             liniaIKolo.kolo.move(liniaIKolo.kierunek * liniaIKolo.predkosc * deltaCzas);
         }
 
-        // Usuwanie kó³ek, które zbli¿y³y siê do œrodka
+        // Usuwanie kÃ³Â³ek, ktÃ³re zbliÂ¿yÂ³y siÃª do Å“rodka
         linieIKolka.erase(std::remove_if(linieIKolka.begin(), linieIKolka.end(), [&](const LiniaIKolo& liniaIKolo) {
-            // Oblicz odleg³oœæ od œrodka
+            // Oblicz odlegÂ³oÅ“Ã¦ od Å“rodka
             sf::Vector2f pozycjaKola = liniaIKolo.kolo.getPosition();
             float dystans = std::sqrt(std::pow(pozycjaKola.x - srodek.x, 2) + std::pow(pozycjaKola.y - srodek.y, 2));
-            return dystans < 20.f; // Usuñ kó³ko, jeœli jest bli¿ej ni¿  pikseli od œrodka
+            return dystans < 20.f; // UsuÃ± kÃ³Â³ko, jeÅ“li jest bliÂ¿ej niÂ¿  pikseli od Å“rodka
             }), linieIKolka.end());
 
         for (auto itWrog = wrogowie.begin(); itWrog != wrogowie.end();) {
@@ -631,22 +631,22 @@ int main() {
             for (const auto& liniaIKolo : linieIKolka) {
                 const sf::CircleShape& kulka = liniaIKolo.kolo;
 
-                // Sprawdzamy kolizjê miêdzy obecn¹ kulk¹ a wrogiem
+                // Sprawdzamy kolizjÃª miÃªdzy obecnÂ¹ kulkÂ¹ a wrogiem
                 if (sprawdzKolizjeKulkaZWrogiem(kulka, *itWrog)) {
                     wrogZniszczony = true;
                     if(trudno){ enemyDeathSound.play(); }
 
-                    break; // Nie trzeba sprawdzaæ dalej, wróg zosta³ trafiony
+                    break; // Nie trzeba sprawdzaÃ¦ dalej, wrÃ³g zostaÂ³ trafiony
                 }
             }
 
-            // Usuñ wroga, jeœli zosta³ zniszczony
+            // UsuÃ± wroga, jeÅ“li zostaÂ³ zniszczony
             if (wrogZniszczony) {
                 liczbaZabitych++;
                 itWrog = wrogowie.erase(itWrog);
             }
             else {
-                ++itWrog; // PrzejdŸ do kolejnego wroga
+                ++itWrog; // PrzejdÅ¸ do kolejnego wroga
             }
         }
 
@@ -698,15 +698,15 @@ int main() {
             przesuniecieObrotu += katRad;
 
             for (auto& liniaIKolo : linieIKolka) {
-                // Obróæ liniê
+                // ObrÃ³Ã¦ liniÃª
                 obrocLinie(liniaIKolo.linia.data(), srodek, katRad);
 
-                // Obróæ kó³ko
+                // ObrÃ³Ã¦ kÃ³Â³ko
                 sf::Vector2f pozycjaKola = liniaIKolo.kolo.getPosition();
                 obrocPunkt(pozycjaKola, srodek, katRad);
                 liniaIKolo.kolo.setPosition(pozycjaKola);
 
-                // Aktualizuj kierunek ruchu (od nowej pozycji kó³ka do œrodka)
+                // Aktualizuj kierunek ruchu (od nowej pozycji kÃ³Â³ka do Å“rodka)
                 sf::Vector2f nowyKierunek = srodek - liniaIKolo.kolo.getPosition();
                 float dlugosc = std::sqrt(nowyKierunek.x * nowyKierunek.x + nowyKierunek.y * nowyKierunek.y);
                 if (dlugosc > 0) {
@@ -722,7 +722,7 @@ int main() {
         }
 
         for (auto& kolo : kolka) {
-            // Kierunek: od kó³ka do œrodka
+            // Kierunek: od kÃ³Â³ka do Å“rodka
             sf::Vector2f kierunek = srodek - kolo.getPosition();
 
             // Normalizacja kierunku
@@ -731,12 +731,12 @@ int main() {
                 kierunek /= dlugosc;
             }
 
-            // Przesuñ kó³ko o sta³¹ prêdkoœæ (np. 200 pikseli na sekundê)
+            // PrzesuÃ± kÃ³Â³ko o staÂ³Â¹ prÃªdkoÅ“Ã¦ (np. 200 pikseli na sekundÃª)
             float predkosc = 200.f;
             kolo.move(kierunek * predkosc * deltaCzas);
         }
 
-        // Aktualizacja oktagonów
+        // Aktualizacja oktagonÃ³w
         for (size_t i = 0; i < oktagony.size(); ++i) {
             oktagony[i].second *= std::pow(aktualnyMnoznikRozrostu, deltaCzas);
             oktagony[i].first = utworzOktagon(srodek, oktagony[i].second, przesuniecieObrotu);
@@ -775,7 +775,7 @@ int main() {
             }
         }
 
-        // Funkcja aktualizacji wrogów
+        // Funkcja aktualizacji wrogÃ³w
         updateWrogowie(deltaCzas, srodek);
 
 
@@ -791,7 +791,7 @@ int main() {
         okno.draw(backgroundSprite);
 
 
-        // Rysowanie osi i przek¹tnych
+        // Rysowanie osi i przekÂ¹tnych
         okno.draw(osX, 2, sf::Lines);
         okno.draw(osY, 2, sf::Lines);
         okno.draw(przekatna1, 2, sf::Lines);
@@ -801,23 +801,23 @@ int main() {
             // Pomijamy rysowanie linii:
             // okno.draw(liniaIKolo.linia.data(), 2, sf::Lines);
 
-            // Rysujemy tylko kó³ka
+            // Rysujemy tylko kÃ³Â³ka
             if (trudno) {
                 okno.draw(liniaIKolo.kolo);
             }
         }
 
-        // Rysowanie bia³ych oktagonów
+        // Rysowanie biaÂ³ych oktagonÃ³w
         for (const auto& oktagon : oktagony) {
             rysujPelnyOktagon(okno, oktagon.first, sf::Color(207, 221, 255));
         }
 
-        // Rysowanie czerwonych oktagonów z dziurami
+        // Rysowanie czerwonych oktagonÃ³w z dziurami
         for (size_t i = 0; i < czerwoneOktagony.size(); ++i) {
             rysujOktagonZDziurami(okno, czerwoneOktagony[i].first, dziuryWDanychOktagonach[i], sf::Color::Red);
         }
 
-        //rysowanie wrogów
+        //rysowanie wrogÃ³w
         if (trudno) {
             drawWrogowie(okno, wrogTexture);
             okno.draw(ramkaLicznika);
@@ -834,7 +834,7 @@ int main() {
         okno.display();
 
 
-        //Deklaracja tekstów w wyborze trudnoœci
+        //Deklaracja tekstÃ³w w wyborze trudnoÅ“ci
         sf::Text tekstEasy;
         tekstEasy.setFont(font);
         tekstEasy.setString("EASY");
@@ -857,21 +857,21 @@ int main() {
 
         if (poczatekGry) {
             //endbackgroundMusic.stop();
-            startbackgroundMusic.setLoop(true);  // W³¹cz pêtlê
-            startbackgroundMusic.setVolume(100); // Ustawienie g³oœnoœci (0-100)
-            startbackgroundMusic.play();        // Rozpoczêcie odtwarzania
+            startbackgroundMusic.setLoop(true);  // WÂ³Â¹cz pÃªtlÃª
+            startbackgroundMusic.setVolume(100); // Ustawienie gÂ³oÅ“noÅ“ci (0-100)
+            startbackgroundMusic.play();        // RozpoczÃªcie odtwarzania
         }
         
         //if (koniecGry) {
         //    startbackgroundMusic.stop();
-        //    endbackgroundMusic.setLoop(true);  // W³¹cz pêtlê
-        //    endbackgroundMusic.setVolume(40); // Ustawienie g³oœnoœci (0-100)
-        //    endbackgroundMusic.play();        // Rozpoczêcie odtwarzania
+        //    endbackgroundMusic.setLoop(true);  // WÂ³Â¹cz pÃªtlÃª
+        //    endbackgroundMusic.setVolume(40); // Ustawienie gÂ³oÅ“noÅ“ci (0-100)
+        //    endbackgroundMusic.play();        // RozpoczÃªcie odtwarzania
 
         //}
 
 
-        //Wyœwietlanie menu
+        //WyÅ“wietlanie menu
         while (poczatekGry) {
 
             
@@ -933,7 +933,7 @@ int main() {
                         katObrotu = 0.f;
                         gracz.setTexture(&graczTextureFront);
 
-                        //Reset Oktagonów
+                        //Reset OktagonÃ³w
                         oktagony.clear();
                         czerwoneOktagony.clear();
                         dziuryWDanychOktagonach.clear();
@@ -970,7 +970,7 @@ int main() {
                         katObrotu = 0.f;
                         gracz.setTexture(&graczTextureFront);
 
-                        //Reset Oktagonów
+                        //Reset OktagonÃ³w
                         oktagony.clear();
                         czerwoneOktagony.clear();
                         dziuryWDanychOktagonach.clear();
@@ -1016,9 +1016,9 @@ int main() {
             };
 
             for (int i = 0; i < 5; ++i) {
-                gracz.setTexture(explosionTextures[i]); // Ustaw kolejn¹ teksturê
-                okno.draw(gracz); // Narysuj gracza z now¹ tekstur¹
-                okno.display(); // Wyœwietl zmiany
+                gracz.setTexture(explosionTextures[i]); // Ustaw kolejnÂ¹ teksturÃª
+                okno.draw(gracz); // Narysuj gracza z nowÂ¹ teksturÂ¹
+                okno.display(); // WyÅ“wietl zmiany
                 sf::sleep(sf::seconds(0.1f)); // Poczekaj 0.1 sekundy
             }
             bool nowyrekord = false;
@@ -1049,7 +1049,7 @@ int main() {
                
             }
             liczbaZabitych = 0;
-            // Wyœwietlenie napisu GAME OVER
+            // WyÅ“wietlenie napisu GAME OVER
             sf::Text tekstGameOver;
             tekstGameOver.setFont(font);
             tekstGameOver.setString("GAME OVER");
@@ -1149,7 +1149,7 @@ int main() {
                             gracz.setTexture(&graczTextureFront);
 
 
-                            //Reset Oktagonów
+                            //Reset OktagonÃ³w
                             oktagony.clear();
                             czerwoneOktagony.clear();
                             dziuryWDanychOktagonach.clear();
@@ -1167,7 +1167,7 @@ int main() {
                             przekatna2[0].position = sf::Vector2f(-ROZMIAR_OKNA, ROZMIAR_OKNA * 2);
                             przekatna2[1].position = sf::Vector2f(ROZMIAR_OKNA * 2, -ROZMIAR_OKNA);
 
-                            //Reset wrogów i pocisków
+                            //Reset wrogÃ³w i pociskÃ³w
                             wrogowie.clear();
                             wrogClock.restart();
 
